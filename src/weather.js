@@ -1,4 +1,5 @@
 var utilities = require('../src/Utilities.js');
+var resources = require('../src/resources/resources.js');
 
 var weather = {
     get: function(req, res){
@@ -6,8 +7,10 @@ var weather = {
     },
     getByCoordinates: function(req, res){
 	var coordinates = utilities.parseCoordinates(req.params.coordinates);
-
-	res.end(coordinates.latitude + coordinates.longitude);
+	var result = resources.OpenWeatherByCoordinates(coordinates, function(result){
+		res.statusCode = 200;
+		res.end(JSON.stringify(result));
+	    });
     },
     getByCity: function(req, res){
 	res.end(req.params.city);
